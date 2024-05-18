@@ -1,0 +1,52 @@
+ALGORITHM ToadsAndFrogs //Brute Force Algorithm
+Input: An array of 2n+1 elements with all the Toads(n) on the left side and Frogs(n) on the right side
+Output: An array of 2n+1 elements with all the Frogs(n) on the left side and Toads(n) on the right side
+
+PuzzleSizeLeft <- n 
+PuzzleSizeRight <- n
+PuzzleSize <- 2n+1
+CALL NewGame(PuzzleSizeLeft, PuzzleSizeRight)
+WHILE NOT IsWin()
+    INPUT index
+    CALL TryMove(index)
+
+PRINT ("You have solved the puzzle!")
+
+//FUNCTIONS
+FUNCTION NewGame(PuzzleSizeLeft, PuzzleSizeRight)
+    Puzzle[PuzzleSizeLeft + PuzzleSizeRight + 1]
+    // Initializing
+    FOR i <- 0 TO PuzzleSizeLeft - 1 DO    
+        Puzzle[i] <- 1 //Toad
+    Puzzle[PuzzleSizeLeft] <- 0
+    FOR i <- PuzzleSizeLeft TO PuzzleSize DO    
+        Puzzle[i] <- 2 //Frog
+
+FUNCTION TryMove(position)
+    IF Puzzle[position] != 0 THEN
+        IF Puzzle[position] = 1 THEN
+            IF position + 1 < PuzzleSize AND Puzzle[position + 1] = 0 THEN
+                Puzzle[position + 1] <- 1
+                Puzzle[position] <- 0
+            ELSE IF position + 2 < PuzzleSize AND Puzzle[position + 2] = 0 THEN 
+                Puzzle[position + 2] <- 1
+                Puzzle[position] <- 0
+        ELSE IF Puzzle[position] = 2 THEN
+            IF position - 1 >= 0 AND Puzzle[position - 1] = 0 THEN
+                Puzzle[position - 1] <- 2
+                Puzzle[position] <- 0
+            ELSE IF position - 2 >= 0 AND Puzzle[position - 2] = 0 THEN 
+                Puzzle[position - 2] <- 2
+                Puzzle[position] <- 0
+
+FUNCTION IsWin()
+    win <- true
+    FOR i <- 0 TO PuzzleSizeLeft - 1 DO
+        IF Puzzle[i] != 2 THEN
+            win <- false
+    IF Puzzle[PuzzleSizeLeft] != 0 THEN
+        win <- false
+    FOR i <- PuzzleSizeLeft + 1 TO PuzzleSize DO
+        IF Puzzle[i] != 1 THEN
+            win <- false
+    RETURN win
